@@ -1,0 +1,44 @@
+﻿@using Newtonsoft.Json.Linq
+@using System.Globalization
+@using static Microsoft.Graph.CoreConstants
+@{
+    ViewData["Title"] = "User Profile fetched from MS Graph";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<h1> @Model.Count total events </h1> 
+
+<table class="table table-striped table-condensed" style="font-family: monospace" border="1" >
+      <thead>
+          <tr>><th>Subject</th><th>Start</th><th>End</th></tr>
+       </thead>
+      <tbody>
+          @foreach (var evt in Model)
+        {
+            <tr>
+                <td>@evt.Subject</td>
+                <td>@DateTime.Parse(evt.Start.DateTime).ToString("ddd d MMM hh:mm:ss",
+                  CultureInfo.CreateSpecificCulture("en-US"))  </td>
+                <td>@DateTime.Parse(evt.End.DateTime).ToString("ddd d MMM hh:mm:ss",
+                  CultureInfo.CreateSpecificCulture("en-US"))  </td>
+            </tr>           
+        }
+        </tbody>
+    
+</table>
+
+<div>
+    <code >
+        <pre id="json">
+
+        </pre>
+
+    </code>
+ 
+</div>
+<script>
+var data = @Html.Raw(Json.Serialize(@Model));
+   document.getElementById("json").innerHTML = JSON.stringify(data, null, 4);
+</script>
+
